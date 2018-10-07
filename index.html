@@ -6,9 +6,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
   <title>Dashboard</title>
   <style>#loader{transition:all .3s ease-in-out;opacity:1;visibility:visible;position:fixed;height:100vh;width:100%;background:#fff;z-index:90000}#loader.fadeOut{opacity:0;visibility:hidden}.spinner{width:40px;height:40px;position:absolute;top:calc(50% - 20px);left:calc(50% - 20px);background-color:#333;border-radius:100%;-webkit-animation:sk-scaleout 1s infinite ease-in-out;animation:sk-scaleout 1s infinite ease-in-out}@-webkit-keyframes sk-scaleout{0%{-webkit-transform:scale(0)}100%{-webkit-transform:scale(1);opacity:0}}@keyframes sk-scaleout{0%{-webkit-transform:scale(0);transform:scale(0)}100%{-webkit-transform:scale(1);transform:scale(1);opacity:0}}</style>
+  <link rel="stylesheet" href="kendo/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="kendo/styles/kendo.bootstrap-v4.min.css">
   <link href="style.css" rel="stylesheet">
-  <link href="kendo/js/jquery.min.js" rel="stylesheet">
-  <link href="kendo/js/kendo.all.min.js" rel="stylesheet">
+  <script src="kendo/js/jquery.min.js"></script>
+  <script src="kendo/js/kendo.all.min.js"></script>
 </head>
 
 <body class="app">
@@ -222,6 +224,9 @@
       </div>
       <main class="main-content bgc-grey-100">
         <div id="mainContent">
+            <div id="kendo-example">
+                <div id="kendo-grid"></div>
+            </div>
           <!-- <div class="row gap-20 masonry pos-r">
             <div class="masonry-sizer col-md-6"></div>
             <div class="masonry-item w-100">
@@ -650,12 +655,56 @@
           </div> -->
         </div>
       </main>
-      <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600"><span>Copyright © 2017 Designed by <a href="https://colorlib.com"
-            target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span></footer>
+      <!-- <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600"><span>Copyright © 2017 Designed by <a href="https://colorlib.com"
+            target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span></footer> -->
     </div>
   </div>
+  <style>
+    .main-content {
+      padding:85px 20px 92px 20px;
+      
+    }
+  </style>
   <script type="text/javascript" src="vendor.js"></script>
   <script type="text/javascript" src="bundle.js"></script>
+  <script>
+      $(document).ready(function () {
+          $("#kendo-grid").kendoGrid({
+              dataSource: {
+                  type: "odata",
+                  transport: {
+                      read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+                  },
+                  pageSize: 20
+              },
+              height: "50em",
+              groupable: true,
+              sortable: true,
+              pageable: {
+                  refresh: true,
+                  pageSizes: true,
+                  buttonCount: 5
+              },
+              columns: [{
+                  template: "<div class='customer-photo'" +
+                  "style='background-image: url(../content/web/Customers/#:data.CustomerID#.jpg);'></div>" +
+                  "<div class='customer-name'>#: ContactName #</div>",
+                  field: "ContactName",
+                  title: "Contact Name",
+                  width: 240
+              }, {
+                  field: "ContactTitle",
+                  title: "Contact Title"
+              }, {
+                  field: "CompanyName",
+                  title: "Company Name"
+              }, {
+                  field: "Country",
+                  width: 150
+              }]
+          });
+      });
+  </script>
 </body>
 
 </html>
